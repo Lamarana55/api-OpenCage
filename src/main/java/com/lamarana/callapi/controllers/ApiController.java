@@ -45,8 +45,16 @@ public class ApiController {
         JOpenCageResponse response = jOpenCageGeocoder.reverse(request);
 
         // get the formatted address of the first result:
-        String formattedAddress = response.getResults().get(0).getFormatted();
+        String[] formattedAddress = response.getResults().get(0).getFormatted().split(",");
+        String region = null;
+        if(formattedAddress.length == 3){
+            region = formattedAddress[1].split(" ")[2];
+        }else {
+            region = formattedAddress[2].split(" ")[formattedAddress.length -1];
+        }
+        String adress = response.getResults().get(0).getFormatted();
+//        String region = formattedAddress[formattedAddress.length -1];
 //        formattedAddress is now 'Travessera de Gràcia, 142, 08012 Barcelona, España'
-        return  ResponseEntity.ok().body(response);
+        return  ResponseEntity.ok().body(region);
     }
 }
